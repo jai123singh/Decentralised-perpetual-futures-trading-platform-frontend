@@ -257,7 +257,7 @@ export default function TradingChart() {
 
       updateLastCandleStickWithOneDataPoint(dataPoint, lastCandleStick);
       candlestickSeriesRef.current.update(lastCandleStick.current);
-      chartRef.current.priceScale("right").resetAutoScale();
+      chartRef.current.timeScale().fitContent();
     }
   }, [currentPerpPriceAsNumber, correspondingTimestampAsNumber.current]);
 
