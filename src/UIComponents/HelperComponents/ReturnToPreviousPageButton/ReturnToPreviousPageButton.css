@@ -1,0 +1,11 @@
+.return-to-previous-page-button {
+  border-radius: 50%;
+  background-color: lightgray !important;
+  position: static;
+  top: 0;
+  left: 0;
+}
+
+.return-to-previous-page-button:hover {
+  background-color: darkgrey !important;
+}

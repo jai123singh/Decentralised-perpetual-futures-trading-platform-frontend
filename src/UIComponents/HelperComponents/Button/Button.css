@@ -1,0 +1,26 @@
+.button-style {
+  padding: 2%;
+  background-color: rgb(25, 244, 25);
+  color: black;
+  border-radius: 2%;
+  cursor: pointer;
+  box-sizing: border-box;
+
+  max-width: 50%;
+  width: max-content;
+  height: fit-content;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+
+  /* Preventing overflow */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.button-style:hover {
+  background-color: rgb(9, 171, 9);
+}

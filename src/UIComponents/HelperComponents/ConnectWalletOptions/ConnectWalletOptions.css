@@ -1,0 +1,23 @@
+.connect-wallet-options {
+  padding: 2%;
+  background-color: rgb(25, 244, 25);
+  color: black;
+  border-radius: 2%;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative !important;
+
+  /* Ensuring the button resizes dynamically */
+  /* width: 100%; */
+  max-width: 50%;
+  width: max-content;
+
+  /* Preventing overflow */
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.connect-wallet-options:hover {
+  background-color: rgb(9, 171, 9);
+}

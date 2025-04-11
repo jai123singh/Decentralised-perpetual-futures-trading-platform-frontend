@@ -1,0 +1,54 @@
+.perp-trade-section-page3-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 0%;
+  padding: 0%;
+  box-sizing: border-box;
+  height: 90%;
+  width: 95%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  gap: 0%;
+  color: black;
+  font-size: 0.9em;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.perp-trade-section-page3-confirmation-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 0%;
+  padding: 0%;
+  box-sizing: border-box;
+  height: 50%;
+  width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  gap: 0%;
+  /* border: 2px solid black; */
+  border-radius: 1.5vmin;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+  /* box-shadow: offsetX offsetY blurRadius spreadRadius color; */
+}
+
+.perp-trade-section-page3-confirmation-box-button-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 0%;
+  padding: 0%;
+  box-sizing: border-box;
+  height: 30%;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  gap: 0%;
+}
