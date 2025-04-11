@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import "./DepositUpdateSection.css";
 import DepositUpdateSectionPage1 from "../DepositUpdateSectionPage1/DepositUpdateSectionPage1";
@@ -9,9 +9,14 @@ import { useTrade } from "../Background/TradeContext";
 import BigNumber from "bignumber.js";
 
 export default function DepositUpdateSection() {
-  const [pageNumber, setPageNumber] = useState(1);
-
+  const [pageNumber, setPageNumber] = useState(4);
   let { deposit, maxWithdrawableDeposit } = useTrade();
+
+  useEffect(() => {
+    if (deposit !== undefined) {
+      setPageNumber(1);
+    }
+  }, [deposit]);
 
   let WEI = new BigNumber("1e18");
   let depositInEth = new BigNumber(0);

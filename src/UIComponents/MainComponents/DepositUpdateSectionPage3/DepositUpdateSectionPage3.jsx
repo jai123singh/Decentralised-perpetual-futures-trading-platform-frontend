@@ -14,6 +14,7 @@ import BigNumber from "bignumber.js";
 import { parseEther } from "viem";
 import ConfirmationPage from "../../HelperComponents/ConfirmationPage/ConfirmationPage";
 import { toast } from "sonner";
+import { useTrade } from "../Background/TradeContext";
 
 function extractMainError(error) {
   if (!error) return null;
@@ -49,6 +50,7 @@ export default function DepositUpdateSectionPage3({
   const [text, setText] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
   const { address } = useAccount();
+  const { getLatestData } = useTrade();
 
   const {
     data: hash,
@@ -78,9 +80,9 @@ export default function DepositUpdateSectionPage3({
     let parts = value.split(".");
     if (parts.length === 2 && parts[1].length > 18) return false;
 
-    // let valueAsBigNumber = new BigNumber(value);
-    // if (valueAsBigNumber.isGreaterThan(maxWithdrawableDepositInEth))
-    //   return false;
+    let valueAsBigNumber = new BigNumber(value);
+    if (valueAsBigNumber.isGreaterThan(maxWithdrawableDepositInEth))
+      return false;
 
     return true;
   }
@@ -142,6 +144,8 @@ export default function DepositUpdateSectionPage3({
     if (isPending) {
       setPage("confirmationPage");
       setText("Please sign the transaction");
+      setValueInNumberInputBox("");
+      setIsDisabled(true);
     }
   }, [isPending]);
 
@@ -149,6 +153,8 @@ export default function DepositUpdateSectionPage3({
     if (isConfirming) {
       setPage("confirmationPage");
       setText("Confirming the transaction");
+      setValueInNumberInputBox("");
+      setIsDisabled(true);
     }
   }, [isConfirming]);
 
@@ -157,6 +163,9 @@ export default function DepositUpdateSectionPage3({
       toast.success("Funds withdrawn successfully!");
       reset();
       goToPageOne();
+      setValueInNumberInputBox("");
+      setIsDisabled(true);
+      getLatestData();
     }
   }, [isConfirmed]);
 
@@ -168,6 +177,8 @@ export default function DepositUpdateSectionPage3({
       }
       reset();
       setPage("withdraw");
+      setValueInNumberInputBox("");
+      setIsDisabled(true);
     }
     if (waitError) {
       const mainError = extractMainError(waitError);
@@ -176,6 +187,8 @@ export default function DepositUpdateSectionPage3({
       }
       reset();
       setPage("withdraw");
+      setValueInNumberInputBox("");
+      setIsDisabled(true);
     }
   }, [writeError, waitError]);
 
@@ -185,9 +198,7 @@ export default function DepositUpdateSectionPage3({
         if (page == "withdraw") {
           return (
             <>
-              <ReturnToPreviousPageButton
-                onClick={goToPageOne}
-              ></ReturnToPreviousPageButton>
+              <ReturnToPreviousPageButton onClick={goToPageOne} />
               <div className="deposit-update-section-page3-number-input-section">
                 <NumberInput
                   placeholder={placeholder}

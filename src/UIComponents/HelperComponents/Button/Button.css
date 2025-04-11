@@ -1,6 +1,6 @@
 .button-style {
   padding: 2%;
-  background-color: rgb(25, 244, 25);
+  background-color: lightgray;
   color: black;
   border-radius: 2%;
   cursor: pointer;
@@ -14,13 +14,16 @@
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+  text-align: center;
 
   /* Preventing overflow */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  outline: none;
+  box-shadow: none;
 }
 
 .button-style:hover {
-  background-color: rgb(9, 171, 9);
+  background-color: grey;
 }

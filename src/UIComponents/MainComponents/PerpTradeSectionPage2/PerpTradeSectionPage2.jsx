@@ -64,7 +64,7 @@ export default function PerpTradeSectionPage2({ goToPageThree, goToPageFour }) {
       <div className="perp-trade-section-page2-subsection">{`Platform Fee: ${platformFeeCollectedToOpenThePositionInEth.toString()} ETH`}</div>
       <div className="perp-trade-section-page2-subsection">{`Number of Perp: ${numberOfPerpInOpenPosition.toString()}`}</div>
       <div className="perp-trade-section-page2-subsection">{`Entry Price: ${entryPrice.toString()} ETH`}</div>
-      <div className="perp-trade-section-page2-subsection">{`Leverage: ${leverage.toString()}`}</div>
+      <div className="perp-trade-section-page2-subsection">{`Leverage: ${leverage.toString()}x`}</div>
       <div className="perp-trade-section-page2-subsection">{`Margin: ${marginInEth.toString()} ETH`}</div>
       <div className="perp-trade-section-page2-subsection">{`Maintenance Margin: ${maintenanceMarginInEth.toString()} ETH`}</div>
       <div className="perp-trade-section-page2-subsection">{`Effective Margin: ${effectiveMarginInEth.toString()} ETH`}</div>

@@ -39,6 +39,7 @@ export default function PerpTradeSectionPage3({ goToPageTwo, goToPageOne }) {
   const [page, setPage] = useState("closePositionPage");
   const [textForConfirmationPage, setTextForConfirmationPage] = useState("");
   const { address } = useAccount();
+  const { getLatestData } = useTrade();
   const {
     data: hash,
     error: writeError,
@@ -58,7 +59,7 @@ export default function PerpTradeSectionPage3({ goToPageTwo, goToPageOne }) {
   // format pnl
   let pnlInEthAsString = "";
   let WEI = new BigNumber("1e18");
-  if (pnl) {
+  if (pnl !== undefined) {
     let pnlInEth = new BigNumber(pnl.toString()).dividedBy(WEI);
     pnlInEthAsString = pnlInEth.toString();
     if (pnlInEth.isGreaterThan("0")) {
@@ -97,6 +98,7 @@ export default function PerpTradeSectionPage3({ goToPageTwo, goToPageOne }) {
       toast.success("Position closed successfully!");
       reset();
       goToPageOne();
+      getLatestData();
     }
   }, [isConfirmed]);
 

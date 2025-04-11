@@ -61,7 +61,8 @@ export default function PerpTradeSectionPage1({ goToPageTwo }) {
   } = useWaitForTransactionReceipt({
     hash,
   });
-  let { maxNumberOfTradeablePerp, currentPerpPrice } = useTrade();
+  let { maxNumberOfTradeablePerp, currentPerpPrice, deposit, getLatestData } =
+    useTrade();
   const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
   // for long, short button
   function handleClickOnLongButton() {
@@ -202,29 +203,33 @@ export default function PerpTradeSectionPage1({ goToPageTwo }) {
 
   useEffect(() => {
     checkAndChangeAvailablityOfTradeButton();
-  });
+  }, [selectedButton, quantity, slippageTolerance, leverage]);
 
   // below we are handling trade button click
   function handleClick() {
-    let functionName = "";
-    if (selectedButton === "long") {
-      functionName = "buy";
-    } else if (selectedButton === "short") {
-      functionName = "sell";
-    }
+    if (deposit !== undefined && deposit <= 0n) {
+      toast.warning("A deposit greater than 0 ETH is required to trade.");
+    } else {
+      let functionName = "";
+      if (selectedButton === "long") {
+        functionName = "buy";
+      } else if (selectedButton === "short") {
+        functionName = "sell";
+      }
 
-    writeContract({
-      address: CONTRACT_ADDRESS,
-      abi: contractABI,
-      functionName: functionName,
-      args: [
-        address,
-        BigInt(quantity),
-        BigInt(leverage),
-        currentPerpPrice,
-        BigInt(slippageTolerance),
-      ],
-    });
+      writeContract({
+        address: CONTRACT_ADDRESS,
+        abi: contractABI,
+        functionName: functionName,
+        args: [
+          address,
+          BigInt(quantity),
+          BigInt(leverage),
+          currentPerpPrice,
+          BigInt(slippageTolerance),
+        ],
+      });
+    }
   }
 
   // below we are reacting on changes happening to various variables give by useWriteContract and useWaitForTransactionReceipt
@@ -233,6 +238,11 @@ export default function PerpTradeSectionPage1({ goToPageTwo }) {
     if (isPending) {
       setPage("confirmationPage");
       setTextForConfirmationPage("Please sign the transaction");
+      setSelectedButton("");
+      setQuantity("");
+      setSlippageTolerance("");
+      setLeverage("");
+      setIsDisabled("");
     }
   }, [isPending]);
 
@@ -240,6 +250,11 @@ export default function PerpTradeSectionPage1({ goToPageTwo }) {
     if (isConfirming) {
       setPage("confirmationPage");
       setTextForConfirmationPage("Confirming the transaction");
+      setSelectedButton("");
+      setQuantity("");
+      setSlippageTolerance("");
+      setLeverage("");
+      setIsDisabled("");
     }
   }, [isConfirming]);
 
@@ -248,6 +263,12 @@ export default function PerpTradeSectionPage1({ goToPageTwo }) {
       toast.success("Trade executed successfully! Your position is now open.");
       reset();
       goToPageTwo();
+      setSelectedButton("");
+      setQuantity("");
+      setSlippageTolerance("");
+      setLeverage("");
+      setIsDisabled("");
+      getLatestData();
     }
   }, [isConfirmed]);
 
@@ -259,6 +280,11 @@ export default function PerpTradeSectionPage1({ goToPageTwo }) {
       }
       reset();
       setPage("tradingPage");
+      setSelectedButton("");
+      setQuantity("");
+      setSlippageTolerance("");
+      setLeverage("");
+      setIsDisabled("");
     }
     if (waitError) {
       const mainError = extractMainError(waitError);
@@ -267,6 +293,11 @@ export default function PerpTradeSectionPage1({ goToPageTwo }) {
       }
       reset();
       setPage("tradingPage");
+      setSelectedButton("");
+      setQuantity("");
+      setSlippageTolerance("");
+      setLeverage("");
+      setIsDisabled("");
     }
   }, [writeError, waitError]);
 
@@ -277,8 +308,22 @@ export default function PerpTradeSectionPage1({ goToPageTwo }) {
           return (
             <>
               <div className="perp-trade-section-page1-buy-sell-section">
-                <Button onClick={handleClickOnLongButton}>Long</Button>
-                <Button onClick={handleClickOnShortButton}>Short</Button>
+                <Button
+                  className={
+                    selectedButton == "long" ? "long-button-selected" : ""
+                  }
+                  onClick={handleClickOnLongButton}
+                >
+                  Long
+                </Button>
+                <Button
+                  className={
+                    selectedButton == "short" ? "short-button-selected" : ""
+                  }
+                  onClick={handleClickOnShortButton}
+                >
+                  Short
+                </Button>
               </div>
               <div className="perp-trade-section-page1-quantity-section">
                 <NumberInput

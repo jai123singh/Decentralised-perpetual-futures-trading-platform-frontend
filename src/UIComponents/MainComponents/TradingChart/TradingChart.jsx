@@ -167,7 +167,6 @@ export default function TradingChart() {
         candlestickSeriesRef.current.setData(candleStickFormatDataSet);
 
         chartRef.current.timeScale().fitContent(); // Fit X-axis to show all candles
-        chartRef.current.priceScale("right").resetAutoScale(); // Ensure Y-axis fits initial data
       }
     }
 

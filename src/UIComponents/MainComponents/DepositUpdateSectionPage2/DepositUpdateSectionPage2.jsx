@@ -14,6 +14,7 @@ import BigNumber from "bignumber.js";
 import { parseEther } from "viem";
 import ConfirmationPage from "../../HelperComponents/ConfirmationPage/ConfirmationPage";
 import { toast } from "sonner";
+import { useTrade } from "../Background/TradeContext";
 
 function extractMainError(error) {
   if (!error) return null;
@@ -41,6 +42,7 @@ export default function DepositUpdateSectionPage2({ goToPageOne }) {
   const [text, setText] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
   const { address } = useAccount();
+  const { getLatestData } = useTrade();
 
   const {
     data: hash,
@@ -128,6 +130,8 @@ export default function DepositUpdateSectionPage2({ goToPageOne }) {
     if (isPending) {
       setPage("confirmationPage");
       setText("Please sign the transaction");
+      setValueInNumberInputBox("");
+      setIsDisabled(true);
     }
   }, [isPending]);
 
@@ -135,14 +139,19 @@ export default function DepositUpdateSectionPage2({ goToPageOne }) {
     if (isConfirming) {
       setPage("confirmationPage");
       setText("Confirming the transaction");
+      setValueInNumberInputBox("");
+      setIsDisabled(true);
     }
   }, [isConfirming]);
 
   useEffect(() => {
     if (isConfirmed) {
       toast.success("Deposit successful!");
+      setValueInNumberInputBox("");
+      setIsDisabled(true);
       reset();
       goToPageOne();
+      getLatestData();
     }
   }, [isConfirmed]);
 
@@ -154,6 +163,8 @@ export default function DepositUpdateSectionPage2({ goToPageOne }) {
       }
       reset();
       setPage("deposit");
+      setValueInNumberInputBox("");
+      setIsDisabled(true);
     }
     if (waitError) {
       const mainError = extractMainError(waitError);
@@ -162,6 +173,8 @@ export default function DepositUpdateSectionPage2({ goToPageOne }) {
       }
       reset();
       setPage("deposit");
+      setValueInNumberInputBox("");
+      setIsDisabled(true);
     }
   }, [writeError, waitError]);
 

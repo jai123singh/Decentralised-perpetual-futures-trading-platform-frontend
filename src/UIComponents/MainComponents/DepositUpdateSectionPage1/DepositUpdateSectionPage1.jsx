@@ -10,6 +10,7 @@ export default function DepositUpdateSectionPage1({
   depositInEth,
   maxWithdrawableDepositInEth,
 }) {
+  let { deposit, maxWithdrawableDeposit } = useTrade();
   return (
     <>
       <div className="deposit-update-section-page1-para">

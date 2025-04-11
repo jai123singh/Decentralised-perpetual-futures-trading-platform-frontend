@@ -108,3 +108,21 @@
 .trade-button-disable-style {
   cursor: not-allowed;
 }
+
+.long-button-selected {
+  border: 2px solid black;
+  background-color: green;
+}
+
+.long-button-selected:hover {
+  background-color: darkgreen;
+}
+
+.short-button-selected {
+  border: 2px solid black;
+  background-color: red;
+}
+
+.short-button-selected:hover {
+  background-color: darkred;
+}

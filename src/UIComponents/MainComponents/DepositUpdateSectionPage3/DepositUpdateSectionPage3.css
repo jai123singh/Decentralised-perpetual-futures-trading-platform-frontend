@@ -11,6 +11,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  position: relative;
 }
 
 .deposit-update-section-page3-number-input-section {
