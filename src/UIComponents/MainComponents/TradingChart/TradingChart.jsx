@@ -177,8 +177,8 @@ export default function TradingChart() {
         textColor: "white",
       },
 
-      width: tradingChartContainerRef.current.clientWidth,
-      height: tradingChartContainerRef.current.clientHeight,
+      width: tradingChartContainerRef.current.clientWidth * 0.95,
+      height: tradingChartContainerRef.current.clientHeight * 0.95,
       grid: {
         vertLines: {
           color: "rgba(180, 180, 180, 0.5)", // brighter gray
@@ -232,8 +232,8 @@ export default function TradingChart() {
 
     const handleResize = () => {
       chartRef.current.applyOptions({
-        width: tradingChartContainerRef.current.clientWidth,
-        height: tradingChartContainerRef.current.clientHeight,
+        width: tradingChartContainerRef.current.clientWidth * 0.95,
+        height: tradingChartContainerRef.current.clientHeight * 0.95,
       });
     };
 
@@ -257,7 +257,6 @@ export default function TradingChart() {
 
       updateLastCandleStickWithOneDataPoint(dataPoint, lastCandleStick);
       candlestickSeriesRef.current.update(lastCandleStick.current);
-      chartRef.current.timeScale().fitContent();
     }
   }, [currentPerpPriceAsNumber, correspondingTimestampAsNumber.current]);
 

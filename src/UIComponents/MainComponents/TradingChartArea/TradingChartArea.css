@@ -1,8 +1,8 @@
 .tradingchart-area {
   background-color: black;
-  height: 100%;
+  height: 95%;
   width: 50%;
-  display: grid;
+  display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
@@ -15,11 +15,11 @@
   gap: 0%;
 }
 
-.tradingchart-area-section {
-  background-color: black;
+.tradingchart-area-chart-section {
+  background-color: transparent;
   height: 80%;
   width: 100%;
-  display: grid;
+  display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
@@ -29,6 +29,8 @@
   display: block;
   padding: 0%;
   gap: 0%;
+  margin-left: 2%;
+  margin-top: 2%;
 }
 
 .tradingchart-area-bottom-section {
@@ -45,6 +47,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   background-color: transparent;
+  padding-bottom: 5%;
 }
 
 .tradingchart-area-bottom-section-subsection {
@@ -55,12 +58,13 @@
   margin: 0%;
   padding: 0%;
   box-sizing: border-box;
-  height: 100%;
+  height: 90%;
   width: 50%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   background-color: transparent;
-  font-size: 0.9em;
+  font-size: 0.85em;
   color: whitesmoke;
+  margin-left: 2%;
 }
