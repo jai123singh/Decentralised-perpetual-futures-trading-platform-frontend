@@ -169,4 +169,5 @@
 .short-button-selected {
   border-bottom: 2px solid #ff5353 !important;
   background-color: rgba(255, 83, 83, 0.4) !important;
+  transform: none !important;
 }

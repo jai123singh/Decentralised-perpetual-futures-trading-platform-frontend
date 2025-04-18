@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRef, useEffect } from "react";
 import "./TradingChart.css";
 import { CandlestickSeries, createChart, ColorType } from "lightweight-charts";
@@ -10,6 +10,7 @@ import { useAccount } from "wagmi";
 import { useConfig } from "wagmi";
 import { useTrade } from "../Background/TradeContext";
 import { toast } from "sonner";
+import Button from "../../HelperComponents/Button/Button";
 
 // following function is used to get data from backend
 
@@ -40,8 +41,13 @@ function fromStringToNumber(data) {
 }
 
 // following function is used to update lastCandleStick with one dataPoint
-function updateLastCandleStickWithOneDataPoint(dataPoint, lastCandleStick) {
-  let newTime = Math.floor(dataPoint.time / 3600) * 3600;
+function updateLastCandleStickWithOneDataPoint(
+  dataPoint,
+  lastCandleStick,
+  timeIntervalInSeconds
+) {
+  let newTime =
+    Math.floor(dataPoint.time / timeIntervalInSeconds) * timeIntervalInSeconds;
   if (newTime === lastCandleStick.current.time) {
     lastCandleStick.current.high = Math.max(
       lastCandleStick.current.high,
@@ -61,7 +67,11 @@ function updateLastCandleStickWithOneDataPoint(dataPoint, lastCandleStick) {
   }
 }
 // following function is used to convert an array to candlestick format array
-function convertToCandleStickFormat(data, lastCandleStick) {
+function convertToCandleStickFormat(
+  data,
+  lastCandleStick,
+  timeIntervalInSeconds
+) {
   let localLastCandleStick = {
     open: 0,
     high: 0,
@@ -73,7 +83,9 @@ function convertToCandleStickFormat(data, lastCandleStick) {
   let candleStickFormatData = [];
 
   for (let dataPoint of data) {
-    let newTime = Math.floor(dataPoint.time / 3600) * 3600;
+    let newTime =
+      Math.floor(dataPoint.time / timeIntervalInSeconds) *
+      timeIntervalInSeconds;
 
     if (newTime === localLastCandleStick.time) {
       localLastCandleStick.high = Math.max(
@@ -109,7 +121,42 @@ function convertToCandleStickFormat(data, lastCandleStick) {
   return candleStickFormatData;
 }
 
+async function putInitialDataInChart(
+  intialX,
+  intialY,
+  timeIntervalInSeconds,
+  lastCandleStick,
+  candlestickSeriesRef,
+  chartRef
+) {
+  let response = await getDataForChartFromBackend(intialX, intialY);
+
+  if (response == null) {
+    toast.error("Error fetching price history.");
+  } else {
+    let rawDataSet = fromStringToNumber(response.data.dataPoints);
+    rawDataSet = rawDataSet.reverse();
+
+    let candleStickFormatDataSet = convertToCandleStickFormat(
+      rawDataSet,
+      lastCandleStick,
+      timeIntervalInSeconds
+    );
+    candlestickSeriesRef.current.setData(candleStickFormatDataSet);
+
+    chartRef.current.timeScale().fitContent();
+  }
+}
+
 export default function TradingChart() {
+  const oneMin = 60;
+  const fiveMin = oneMin * 5;
+  const fifteenMin = fiveMin * 3;
+  const oneHour = fifteenMin * 4;
+  const fourHour = oneHour * 4;
+  const oneDay = fourHour * 6;
+  const oneWeek = oneDay * 7;
+  const [timeInterval, setTimeInterval] = useState(oneHour);
   const tradingChartContainerRef = useRef(null);
   const chartRef = useRef(null);
   const candlestickSeriesRef = useRef(null);
@@ -125,11 +172,13 @@ export default function TradingChart() {
     close: 0,
     time: 0,
   });
+
   let initialData;
   let intialX = 500;
   let intialY = 0;
-  let currentPerpPriceAsNumber;
-  if (currentPerpPrice) {
+  let timeIntervalInSeconds = timeInterval;
+  let currentPerpPriceAsNumber = 0;
+  if (currentPerpPrice !== undefined) {
     currentPerpPriceAsNumber = Number(
       new BigNumber(currentPerpPrice.toString()).dividedBy(
         new BigNumber("1e18")
@@ -150,44 +199,24 @@ export default function TradingChart() {
   });
 
   useEffect(() => {
-    // following function runs only one time, ie when chart element is mounted
-    async function putInitialDataInChart() {
-      let response = await getDataForChartFromBackend(intialX, intialY);
-
-      if (response == null) {
-        toast.error("Error fetching price history.");
-      } else {
-        let rawDataSet = fromStringToNumber(response.data.dataPoints);
-        rawDataSet = rawDataSet.reverse();
-
-        let candleStickFormatDataSet = convertToCandleStickFormat(
-          rawDataSet,
-          lastCandleStick
-        );
-        candlestickSeriesRef.current.setData(candleStickFormatDataSet);
-
-        chartRef.current.timeScale().fitContent(); // Fit X-axis to show all candles
-      }
-    }
-
     chartRef.current = createChart(tradingChartContainerRef.current, {
       layout: {
         background: { type: ColorType.Solid, color: "Transparent" },
-        textColor: "#c7c7c7",
+        textColor: "#A0A0A0",
       },
 
       width: tradingChartContainerRef.current.clientWidth * 0.95,
       height: tradingChartContainerRef.current.clientHeight * 0.95,
       grid: {
         vertLines: {
-          color: "rgba(180, 180, 180, 0.5)", // brighter gray
-          style: 1,
-          width: 1,
+          color: "rgba(180, 180, 180, 0.1)", // brighter gray
+          style: 2,
+          width: 0.25,
         },
         horzLines: {
-          color: "rgba(180, 180, 180, 0.5)", // brighter gray
-          style: 1,
-          width: 1,
+          color: "rgba(180, 180, 180, 0.1)", // brighter gray
+          style: 2,
+          width: 0.25,
         },
       },
     });
@@ -207,16 +236,21 @@ export default function TradingChart() {
       borderColor: "#888",
       timeVisible: true,
       secondsVisible: true,
+      barSpacing: 10, // Fixed space between bars
+      rightOffset: 5, // Space on the right side of the chart
+      lockVisibleTimeRangeOnResize: true, // Prevents automatic rescaling on container resize
+      fixRightEdge: true, // Prevents scrolling beyond the last data point
+      minBarSpacing: 5,
     });
 
     candlestickSeriesRef.current = chartRef.current.addSeries(
       CandlestickSeries,
       {
-        upColor: "#26a69a",
-        downColor: "#ef5350",
+        upColor: "#00C087",
+        downColor: "#FF5353",
         borderVisible: false,
-        wickUpColor: "#26a69a",
-        wickDownColor: "#ef5350",
+        wickUpColor: "#00C087",
+        wickDownColor: "#FF5353",
         priceFormat: {
           type: "price",
           precision: 8, // show up to 8 digits after decimal for very small values
@@ -238,7 +272,14 @@ export default function TradingChart() {
 
     window.addEventListener("resize", handleResize);
 
-    putInitialDataInChart();
+    putInitialDataInChart(
+      intialX,
+      intialY,
+      timeIntervalInSeconds,
+      lastCandleStick,
+      candlestickSeriesRef,
+      chartRef
+    );
 
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -254,10 +295,100 @@ export default function TradingChart() {
         time: correspondingTimestampAsNumber.current,
       };
 
-      updateLastCandleStickWithOneDataPoint(dataPoint, lastCandleStick);
+      updateLastCandleStickWithOneDataPoint(
+        dataPoint,
+        lastCandleStick,
+        timeIntervalInSeconds
+      );
       candlestickSeriesRef.current.update(lastCandleStick.current);
     }
-  }, [currentPerpPriceAsNumber, correspondingTimestampAsNumber.current]);
+  }, [currentPerpPrice, correspondingTimestampAsNumber]);
 
-  return <div className="trading-chart" ref={tradingChartContainerRef}></div>;
+  useEffect(() => {
+    putInitialDataInChart(
+      intialX,
+      intialY,
+      timeIntervalInSeconds,
+      lastCandleStick,
+      candlestickSeriesRef,
+      chartRef
+    );
+  }, [timeInterval]);
+
+  return (
+    <div className="trading-chart" ref={tradingChartContainerRef}>
+      <div className="trading-chart-button-group-container">
+        <Button
+          className={`trading-chart-button-style ${
+            timeInterval === oneMin ? "trading-chart-button-selected" : ""
+          }`}
+          onClick={() => {
+            setTimeInterval(oneMin);
+          }}
+        >
+          1m
+        </Button>
+        <Button
+          className={`trading-chart-button-style ${
+            timeInterval === fiveMin ? "trading-chart-button-selected" : ""
+          }`}
+          onClick={() => {
+            setTimeInterval(fiveMin);
+          }}
+        >
+          5m
+        </Button>
+        <Button
+          className={`trading-chart-button-style ${
+            timeInterval === fifteenMin ? "trading-chart-button-selected" : ""
+          }`}
+          onClick={() => {
+            setTimeInterval(fifteenMin);
+          }}
+        >
+          15m
+        </Button>
+        <Button
+          className={`trading-chart-button-style ${
+            timeInterval === oneHour ? "trading-chart-button-selected" : ""
+          }`}
+          onClick={() => {
+            setTimeInterval(oneHour);
+          }}
+        >
+          1h
+        </Button>
+        <Button
+          className={`trading-chart-button-style ${
+            timeInterval === fourHour ? "trading-chart-button-selected" : ""
+          }`}
+          onClick={() => {
+            setTimeInterval(fourHour);
+          }}
+        >
+          4h
+        </Button>
+        <Button
+          className={`trading-chart-button-style ${
+            timeInterval === oneDay ? "trading-chart-button-selected" : ""
+          }`}
+          onClick={() => {
+            setTimeInterval(oneDay);
+          }}
+        >
+          1D
+        </Button>
+        <Button
+          className={`trading-chart-button-style ${
+            timeInterval === oneWeek ? "trading-chart-button-selected" : ""
+          }`}
+          onClick={() => {
+            setTimeInterval(oneWeek);
+          }}
+        >
+          1W
+        </Button>
+      </div>
+    </div>
+  );
 }

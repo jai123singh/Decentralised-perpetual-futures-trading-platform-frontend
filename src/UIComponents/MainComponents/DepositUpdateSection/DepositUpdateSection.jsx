@@ -41,8 +41,6 @@ export default function DepositUpdateSection() {
     setPageNumber(3);
   }
 
-  console.log(maxWithdrawableDepositInEth.toString());
-
   return (
     <div className="deposit-section">
       {(() => {
