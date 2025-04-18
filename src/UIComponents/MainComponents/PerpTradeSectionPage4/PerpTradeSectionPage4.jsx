@@ -88,7 +88,11 @@ export default function PerpTradeSectionPage4({ goToPageTwo }) {
     if (parts.length === 2 && parts[1].length > 18) return false;
 
     let valueAsBigNumber = new BigNumber(value);
-    if (valueAsBigNumber.isGreaterThan(maxAmountThatCanBeAddedToMargin))
+    if (
+      valueAsBigNumber.isGreaterThan(
+        new BigNumber(maxAmountThatCanBeAddedToMarginAsString)
+      )
+    )
       return false;
 
     return true;
@@ -104,9 +108,11 @@ export default function PerpTradeSectionPage4({ goToPageTwo }) {
     } else if (num.isLessThanOrEqualTo(new BigNumber(0))) {
       error = "Amount must be greater than 0";
     } else if (
-      valueAsBigNumber.isGreaterThan(maxAmountThatCanBeAddedToMargin)
+      valueAsBigNumber.isGreaterThan(
+        new BigNumber(maxAmountThatCanBeAddedToMarginAsString)
+      )
     ) {
-      error = `Amount cannot be more than ${maxAmountThatCanBeAddedToMargin.toString()}`;
+      error = `Amount cannot be more than ${maxAmountThatCanBeAddedToMarginAsString}`;
     } else {
       let parts = value.split(".");
       if (parts.length === 2 && parts[1].length > 18) {
@@ -120,6 +126,8 @@ export default function PerpTradeSectionPage4({ goToPageTwo }) {
     setValueInNumberInputBox(value);
     if (value !== "") {
       setIsDisabled(false);
+    } else if (value === "") {
+      setIsDisabled(true);
     }
   }
 
@@ -209,27 +217,32 @@ export default function PerpTradeSectionPage4({ goToPageTwo }) {
           return (
             <>
               <ReturnToPreviousPageButton onClick={goToPageTwo} />
-
-              <div className="perp-trade-section-page4-number-input-area">
-                <NumberInput
-                  placeholder={placeholder}
-                  isValid={isValid}
-                  findError={findError}
-                  onCorrectInput={onCorrectInput}
-                  onIncorrectInput={onIncorrectInput}
-                />
+              <div className="perp-trade-section-page4-para">
+                {`Max Additional Margin : 
+                ${maxAmountThatCanBeAddedToMarginAsString} ETH`}
               </div>
-              <Button
-                className={
-                  isDisabled
-                    ? ".perp-trade-section-page4-disabled-button-style"
-                    : ""
-                }
-                disabled={isDisabled}
-                onClick={handleClick}
-              >
-                Add Margin
-              </Button>
+              <div className="perp-trade-section-page4-add-margin-box">
+                <div className="perp-trade-section-page4-number-input-area">
+                  <NumberInput
+                    placeholder={placeholder}
+                    isValid={isValid}
+                    findError={findError}
+                    onCorrectInput={onCorrectInput}
+                    onIncorrectInput={onIncorrectInput}
+                  />
+                </div>
+                <Button
+                  className={`perp-trade-section-page4-add-margin-button-style ${
+                    isDisabled
+                      ? "perp-trade-section-page4-disabled-button-style"
+                      : ""
+                  }`}
+                  disabled={isDisabled}
+                  onClick={handleClick}
+                >
+                  Add Margin
+                </Button>
+              </div>
             </>
           );
         } else if (page == "confirmationPage") {

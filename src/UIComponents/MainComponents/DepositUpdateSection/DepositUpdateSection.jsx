@@ -22,7 +22,7 @@ export default function DepositUpdateSection() {
   let depositInEth = new BigNumber(0);
   let maxWithdrawableDepositInEth = new BigNumber(0);
 
-  if (deposit) {
+  if (deposit !== undefined) {
     depositInEth = new BigNumber(deposit.toString()).dividedBy(WEI);
     maxWithdrawableDepositInEth = new BigNumber(
       maxWithdrawableDeposit.toString()
@@ -40,6 +40,8 @@ export default function DepositUpdateSection() {
   function goToPageThree() {
     setPageNumber(3);
   }
+
+  console.log(maxWithdrawableDepositInEth.toString());
 
   return (
     <div className="deposit-section">

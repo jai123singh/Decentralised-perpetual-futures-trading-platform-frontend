@@ -3,14 +3,16 @@ import { useState } from "react";
 import "./TraderInteractionArea.css";
 import ConnectWalletButton from "../ConnectWalletButton/ConnectWalletButton";
 import ModalToConnectWallet from "../ModalToConnectWallet/ModalToConnectWallet";
-import DisconnectWalletSection from "../DisconnectWalletSection/DisconnectWalletSection";
 import DepositUpdateSection from "../DepositUpdateSection/DepositUpdateSection";
 import PerpTradeSection from "../PerpTradeSection/PerpTradeSection";
-import { useAccount } from "wagmi";
+import AddressAndDisconnectButtonSection from "../../HelperComponents/AddressAndDisconnectButtonSection/AddressAndDisconnectButtonSection";
+import { useAccount, useDisconnect } from "wagmi";
 
 export default function TraderInteractionArea() {
   const { isConnected } = useAccount();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { address } = useAccount();
+  const { disconnect } = useDisconnect();
 
   function changeStateForModalToTrue() {
     setIsModalOpen(true);
@@ -18,6 +20,11 @@ export default function TraderInteractionArea() {
 
   function changeStateForModalToFalse() {
     setIsModalOpen(false);
+  }
+
+  function onclickingDisconnectButton() {
+    disconnect();
+    changeStateForModalToFalse();
   }
 
   return (
@@ -37,8 +44,9 @@ export default function TraderInteractionArea() {
         } else {
           return (
             <>
-              <DisconnectWalletSection
-                changeStateForModalToFalse={changeStateForModalToFalse}
+              <AddressAndDisconnectButtonSection
+                account={address}
+                disconnectWallet={onclickingDisconnectButton}
               />
 
               <DepositUpdateSection />

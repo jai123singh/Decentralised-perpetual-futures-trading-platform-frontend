@@ -22,7 +22,7 @@ export default function LeverageRadioButtonGroup({ onLeverageChange }) {
 
   return (
     <div className="leverage-radio-button-container">
-      <label className="leverage-radio-button-label">Leverage :</label>
+      <label className="leverage-radio-button-label">Leverage </label>
 
       {leverageOptions.map((option) => (
         <div

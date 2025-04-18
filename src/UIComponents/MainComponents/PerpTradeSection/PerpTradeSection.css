@@ -8,8 +8,7 @@
   box-sizing: border-box;
   overflow: hidden;
   text-overflow: ellipsis;
-  height: 60%;
-  width: 90%;
-  background-color: white;
-  border-radius: 1.5vmin;
+  height: 70%;
+  width: 100%;
+  font-size: 13px;
 }

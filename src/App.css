@@ -19,9 +19,6 @@
   background-color: darkred;
 }
 
-
-
-
 button {
   padding: 2%;
   border: none;
@@ -29,4 +26,8 @@ button {
   color: white;
   cursor: pointer;
   border-radius: 2%;
+}
+
+body {
+  font-family: "Inter", sans-serif;
 }

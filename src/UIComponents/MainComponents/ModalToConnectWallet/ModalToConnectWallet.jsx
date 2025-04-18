@@ -14,6 +14,8 @@ export default function ModalToConnectWallet({
   return (
     <div className="modal-overlay">
       <div className="modal-content">
+        <div className="modal-content-main-heading">Connect your wallet</div>
+
         <ConnectWalletOptions />
         <Button
           className="close-modal-button"

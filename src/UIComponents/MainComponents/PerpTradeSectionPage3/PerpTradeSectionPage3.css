@@ -7,14 +7,11 @@
   padding: 0%;
   box-sizing: border-box;
   height: 90%;
-  width: 95%;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   gap: 0%;
-  color: black;
-  font-size: 0.9em;
-  font-family: "Times New Roman", Times, serif;
 }
 
 .perp-trade-section-page3-confirmation-box {
@@ -26,15 +23,12 @@
   padding: 0%;
   box-sizing: border-box;
   height: 50%;
-  width: 80%;
+  width: 70%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  gap: 0%;
-  /* border: 2px solid black; */
-  border-radius: 1.5vmin;
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-  /* box-shadow: offsetX offsetY blurRadius spreadRadius color; */
+  background: #2c2c2c;
+  border-radius: 2vmin;
 }
 
 .perp-trade-section-page3-confirmation-box-button-section {
@@ -50,5 +44,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  gap: 0%;
+}
+
+.perp-trade-section-page3-green-color-style {
+  color: #00c087;
+}
+
+.perp-trade-section-page3-red-color-style {
+  color: #ff5353;
+}
+
+.perp-trade-section-page3-button-style {
+  width: 30% !important;
 }

@@ -10,7 +10,17 @@ export default function App() {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <Toaster position="top-center" richColors />
+        <Toaster
+          position="top-center"
+          theme="dark"
+          toastOptions={{
+            style: {
+              background: "#3a3a3a",
+              color: "#ffffff",
+              border: "1px solid #333",
+            },
+          }}
+        />
         <Background />
       </QueryClientProvider>
     </WagmiProvider>

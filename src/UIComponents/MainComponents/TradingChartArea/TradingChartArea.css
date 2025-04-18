@@ -1,70 +1,17 @@
 .tradingchart-area {
-  background-color: black;
-  height: 95%;
-  width: 50%;
+  height: 100%;
+  width: 65%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  border-radius: 1.5vmin;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: block;
-  padding: 0%;
-  gap: 0%;
-}
-
-.tradingchart-area-chart-section {
-  background-color: transparent;
-  height: 80%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: block;
-  padding: 0%;
-  gap: 0%;
-  margin-left: 2%;
-  margin-top: 2%;
-}
-
-.tradingchart-area-bottom-section {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 0%;
-  padding: 0%;
   box-sizing: border-box;
-  height: 20%;
-  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  background-color: transparent;
-  padding-bottom: 5%;
-}
-
-.tradingchart-area-bottom-section-subsection {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: flex-start;
-  margin: 0%;
   padding: 0%;
-  box-sizing: border-box;
-  height: 90%;
-  width: 50%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin: 0%;
+  padding-left: 4%;
+  padding-top: 2%;
   background-color: transparent;
-  font-size: 0.85em;
-  color: whitesmoke;
-  margin-left: 2%;
 }

@@ -3,8 +3,22 @@ import Button from "../../HelperComponents/Button/Button";
 import "./PerpTradeSectionPage2.css";
 import { useTrade } from "../Background/TradeContext";
 import BigNumber from "bignumber.js";
+import { useRef, useEffect } from "react";
 
 export default function PerpTradeSectionPage2({ goToPageThree, goToPageFour }) {
+  // Creating a ref for the scrollable div
+  const scrollContainerRef = useRef(null);
+
+  // Using useEffect to scroll to bottom when component mounts
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      setTimeout(() => {
+        scrollContainerRef.current.scrollTop =
+          scrollContainerRef.current.scrollHeight;
+      }, 50);
+    }
+  }, []);
+
   let {
     position,
     leverage = 0,
@@ -52,32 +66,129 @@ export default function PerpTradeSectionPage2({ goToPageThree, goToPageFour }) {
   let triggerPriceInEth = new BigNumber(triggerPrice.toString()).dividedBy(WEI);
   return (
     <div className="perp-trade-section-page2">
-      <div className="perp-trade-section-page2-subsection">
+      <div className="perp-trade-section-page2-heading">
         {(() => {
           if (position == 1) {
-            return <b>Open Long Position Summary</b>;
+            return <b>Long Position Details</b>;
           } else {
-            return <b>Open Short Position Summary</b>;
+            return <b>Short Position Details</b>;
           }
         })()}
       </div>
-      <div className="perp-trade-section-page2-subsection">{`Platform Fee: ${platformFeeCollectedToOpenThePositionInEth.toString()} ETH`}</div>
-      <div className="perp-trade-section-page2-subsection">{`Number of Perp: ${numberOfPerpInOpenPosition.toString()}`}</div>
-      <div className="perp-trade-section-page2-subsection">{`Entry Price: ${entryPrice.toString()} ETH`}</div>
-      <div className="perp-trade-section-page2-subsection">{`Leverage: ${leverage.toString()}x`}</div>
-      <div className="perp-trade-section-page2-subsection">{`Margin: ${marginInEth.toString()} ETH`}</div>
-      <div className="perp-trade-section-page2-subsection">{`Maintenance Margin: ${maintenanceMarginInEth.toString()} ETH`}</div>
-      <div className="perp-trade-section-page2-subsection">{`Effective Margin: ${effectiveMarginInEth.toString()} ETH`}</div>
-      <div className="perp-trade-section-page2-subsection">{`Current Price: ${currentPerpPriceInEth.toString()} ETH`}</div>
-      <div className="perp-trade-section-page2-subsection">{`PnL: ${pnlInEthAsString} ETH`}</div>
+
+      <div
+        className="perp-trade-section-page2-info-abt-open-trade-section"
+        ref={scrollContainerRef}
+      >
+        <div className="perp-trade-section-page2-subsection">
+          <div className="perp-trade-section-page2-subsection-left-section">
+            Platform Fee
+          </div>
+          <div className="perp-trade-section-page2-subsection-right-section">
+            {platformFeeCollectedToOpenThePositionInEth.toString()} ETH
+          </div>
+        </div>
+        <div className="perp-trade-section-page2-subsection">
+          <div className="perp-trade-section-page2-subsection-left-section">
+            Perpetual Amount
+          </div>
+          <div className="perp-trade-section-page2-subsection-right-section">
+            {numberOfPerpInOpenPosition.toString()}
+          </div>
+        </div>
+        <div className="perp-trade-section-page2-subsection">
+          <div className="perp-trade-section-page2-subsection-left-section">
+            Entry Price
+          </div>
+          <div className="perp-trade-section-page2-subsection-right-section">
+            {entryPrice.toString()} ETH
+          </div>
+        </div>
+        <div className="perp-trade-section-page2-subsection">
+          <div className="perp-trade-section-page2-subsection-left-section">
+            Leverage
+          </div>
+          <div className="perp-trade-section-page2-subsection-right-section">
+            {leverage.toString()}x
+          </div>
+        </div>
+        <div className="perp-trade-section-page2-subsection">
+          <div className="perp-trade-section-page2-subsection-left-section">
+            Current Price
+          </div>
+          <div className="perp-trade-section-page2-subsection-right-section">
+            {currentPerpPriceInEth.toString()} ETH
+          </div>
+        </div>
+        <div className="perp-trade-section-page2-subsection">
+          <div className="perp-trade-section-page2-subsection-left-section">
+            Margin
+          </div>
+          <div className="perp-trade-section-page2-subsection-right-section">
+            {marginInEth.toString()} ETH
+          </div>
+        </div>
+        <div className="perp-trade-section-page2-subsection">
+          <div className="perp-trade-section-page2-subsection-left-section">
+            Maintenance Margin
+          </div>
+          <div className="perp-trade-section-page2-subsection-right-section">
+            {maintenanceMarginInEth.toString()} ETH
+          </div>
+        </div>
+        <div className="perp-trade-section-page2-subsection">
+          <div className="perp-trade-section-page2-subsection-left-section">
+            Effective Margin
+          </div>
+          <div
+            className={`perp-trade-section-page2-subsection-right-section ${
+              maintenanceMarginInEth.isGreaterThan("0") &&
+              maintenanceMarginInEth
+                .multipliedBy("1.5")
+                .isGreaterThanOrEqualTo(effectiveMarginInEth)
+                ? "perp-trade-section-page2-text-red"
+                : "perp-trade-section-page2-text-green"
+            }`}
+          >
+            {effectiveMarginInEth.toString()} ETH
+          </div>
+        </div>
+
+        <div className="perp-trade-section-page2-subsection">
+          <div className="perp-trade-section-page2-subsection-left-section">
+            PnL
+          </div>
+          <div
+            className={`perp-trade-section-page2-subsection-right-section ${
+              pnlInEth.isGreaterThan("0")
+                ? "perp-trade-section-page2-text-green"
+                : pnlInEth.isLessThan("0")
+                ? "perp-trade-section-page2-text-red"
+                : ""
+            }`}
+          >
+            {pnlInEthAsString} ETH
+          </div>
+        </div>
+      </div>
       <div className="perp-trade-section-page2-warning-section">
-        ⚠️ Your open position will be automatically liquidated if your effective
-        margin falls below your maintenance margin. This will occur when the
-        current perp price drops below {triggerPriceInEth.toString()}.
+        ⚠️ Liquidation Risk: If the perp price falls below{" "}
+        {triggerPriceInEth.toString()}, your position will be liquidated due to
+        insufficient effective margin.
       </div>
       <div className="perp-trade-section-page2-button-section">
-        <Button onClick={goToPageFour}>Add more margin</Button>
-        <Button onClick={goToPageThree}>Close position</Button>
+        <Button
+          className="perp-trade-section-page2-button"
+          onClick={goToPageFour}
+        >
+          Add more margin
+        </Button>
+        <Button
+          className="perp-trade-section-page2-button"
+          onClick={goToPageThree}
+        >
+          Close position
+        </Button>
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import { TradeProvider } from "./TradeContext";
 import { useWatchContractEvent } from "wagmi";
 import { toast } from "sonner";
 import BigNumber from "bignumber.js";
+import TopInfoPanel from "../TopInfoPanel/TopInfoPanel";
 
 export default function Background() {
   const { address } = useAccount();
@@ -17,6 +18,12 @@ export default function Background() {
 
   const response = useReadContracts({
     contracts: [
+      {
+        address: CONTRACT_ADDRESS,
+        abi: contractABI,
+        functionName: "getOraclePrice",
+        args: [],
+      },
       {
         address: CONTRACT_ADDRESS,
         abi: contractABI,
@@ -122,6 +129,7 @@ export default function Background() {
     ],
   });
 
+  let oraclePriceOfUnderlyingAsset;
   let maxNumberOfTradeablePerp;
   let position; // position-> 1->long , -1->short , 0->no open position
   let deposit;
@@ -143,27 +151,29 @@ export default function Background() {
 
   let data = response.data;
   if (data) {
-    if (data[0].status == "success") maxNumberOfTradeablePerp = data[0].result;
-    if (data[1].status == "success") position = data[1].result;
-    if (data[2].status == "success") deposit = data[2].result;
-    if (data[3].status == "success") maxWithdrawableDeposit = data[3].result;
-    if (data[4].status == "success") leverage = data[4].result;
-    if (data[5].status == "success")
-      numberOfPerpInOpenPosition = data[5].result;
+    if (data[0].status == "success")
+      oraclePriceOfUnderlyingAsset = data[0].result;
+    if (data[1].status == "success") maxNumberOfTradeablePerp = data[1].result;
+    if (data[2].status == "success") position = data[2].result;
+    if (data[3].status == "success") deposit = data[3].result;
+    if (data[4].status == "success") maxWithdrawableDeposit = data[4].result;
+    if (data[5].status == "success") leverage = data[5].result;
     if (data[6].status == "success")
-      perpPriceAtWhichTraderEnteredTheTrade = data[6].result;
-    if (data[7].status == "success") margin = data[7].result;
-    if (data[8].status == "success") maintenanceMargin = data[8].result;
-    if (data[9].status == "success") effectiveMargin = data[9].result;
-    if (data[10].status == "success")
-      maxAmountThatCanBeAddedToMargin = data[10].result;
-    if (data[11].status == "success") triggerPrice = data[11].result;
-    if (data[12].status == "success") pnl = data[12].result;
-    if (data[13].status == "success")
-      platformFeeCollectedToOpenThePosition = data[13].result;
-    if (data[14].status == "success") currentPerpPrice = data[14].result;
-    if (data[15].status == "success") lastFundingRate = data[15].result;
-    if (data[16].status == "success") lastFundingTime = data[16].result;
+      numberOfPerpInOpenPosition = data[6].result;
+    if (data[7].status == "success")
+      perpPriceAtWhichTraderEnteredTheTrade = data[7].result;
+    if (data[8].status == "success") margin = data[8].result;
+    if (data[9].status == "success") maintenanceMargin = data[9].result;
+    if (data[10].status == "success") effectiveMargin = data[10].result;
+    if (data[11].status == "success")
+      maxAmountThatCanBeAddedToMargin = data[11].result;
+    if (data[12].status == "success") triggerPrice = data[12].result;
+    if (data[13].status == "success") pnl = data[13].result;
+    if (data[14].status == "success")
+      platformFeeCollectedToOpenThePosition = data[14].result;
+    if (data[15].status == "success") currentPerpPrice = data[15].result;
+    if (data[16].status == "success") lastFundingRate = data[16].result;
+    if (data[17].status == "success") lastFundingTime = data[17].result;
   }
 
   // Note- above variables will be(except for getLatestData. This function would always be available)
@@ -173,6 +183,7 @@ export default function Background() {
   // Note , even it fails due to network error ie say for eg , user's network is not working, so in that case, its not like these objects would remain undefined as request would never be sent, instead, u will get status - failure and error containing the reason for it.Usually the error due to failure would be->ContractFunctionExecutionError: HTTP request failed. URL: https://eth-sepolia.g.alchemy.com/v2/bAo…
 
   const tradeData = {
+    oraclePriceOfUnderlyingAsset,
     maxNumberOfTradeablePerp,
     position,
     deposit,
@@ -192,6 +203,10 @@ export default function Background() {
     lastFundingTime,
     getLatestData,
   };
+
+  useEffect(() => {
+    getLatestData();
+  }, [address]);
 
   // below we are subscribing to  events emitted by perp smart contract
 
@@ -231,14 +246,20 @@ export default function Background() {
   return (
     <TradeProvider value={tradeData}>
       <div className="background">
-        <p className="heading">
+        <div className="background-heading">
           Decentralised Perpetual Futures Trading Platform
-        </p>
+        </div>
 
-        <div className="bottom-section">
+        <div className="background-top-info-section">
+          <TopInfoPanel></TopInfoPanel>
+        </div>
+
+        <div className="background-middle-section">
           <TradingChartArea />
           <TraderInteractionArea />
         </div>
+
+        <div className="background-bottom-section"></div>
       </div>
     </TradeProvider>
   );

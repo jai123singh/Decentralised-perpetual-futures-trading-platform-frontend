@@ -2,89 +2,6 @@ export const contractABI = [
   {
     inputs: [
       {
-        internalType: "int256",
-        name: "_numberOfPerpInLiquidityPool",
-        type: "int256",
-      },
-    ],
-    stateMutability: "payable",
-    type: "constructor",
-  },
-  {
-    inputs: [],
-    name: "ReentrancyGuardReentrantCall",
-    type: "error",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "int256",
-        name: "fundingRate",
-        type: "int256",
-      },
-      {
-        indexed: false,
-        internalType: "int256",
-        name: "timestamp",
-        type: "int256",
-      },
-    ],
-    name: "FundingRateSettlement",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "int256",
-        name: "newPrice",
-        type: "int256",
-      },
-      {
-        indexed: false,
-        internalType: "int256",
-        name: "timestamp",
-        type: "int256",
-      },
-    ],
-    name: "PerpPriceUpdated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "traderAddress",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "int256",
-        name: "timestamp",
-        type: "int256",
-      },
-      {
-        indexed: false,
-        internalType: "int256",
-        name: "platformFee",
-        type: "int256",
-      },
-    ],
-    name: "PositionLiquidated",
-    type: "event",
-  },
-  {
-    stateMutability: "payable",
-    type: "fallback",
-  },
-  {
-    inputs: [
-      {
         internalType: "address",
         name: "traderAddress",
         type: "address",
@@ -186,19 +103,6 @@ export const contractABI = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "currentPriceOfPerp",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "address",
@@ -221,6 +125,164 @@ export const contractABI = [
     name: "executeFundingRateMechanism",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "addressOfTrader",
+        type: "address",
+      },
+      {
+        internalType: "int256",
+        name: "numberOfPerpSold",
+        type: "int256",
+      },
+      {
+        internalType: "int256",
+        name: "leverageUsedByTrader",
+        type: "int256",
+      },
+      {
+        internalType: "int256",
+        name: "perpPriceWhenTraderClickedSell",
+        type: "int256",
+      },
+      {
+        internalType: "int256",
+        name: "slippageToleranceOfTrader",
+        type: "int256",
+      },
+    ],
+    name: "sell",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "int256",
+        name: "_numberOfPerpInLiquidityPool",
+        type: "int256",
+      },
+    ],
+    stateMutability: "payable",
+    type: "constructor",
+  },
+  {
+    inputs: [],
+    name: "ReentrancyGuardReentrantCall",
+    type: "error",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "int256",
+        name: "fundingRate",
+        type: "int256",
+      },
+      {
+        indexed: false,
+        internalType: "int256",
+        name: "timestamp",
+        type: "int256",
+      },
+    ],
+    name: "FundingRateSettlement",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "int256",
+        name: "newPrice",
+        type: "int256",
+      },
+      {
+        indexed: false,
+        internalType: "int256",
+        name: "timestamp",
+        type: "int256",
+      },
+    ],
+    name: "PerpPriceUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "traderAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "int256",
+        name: "timestamp",
+        type: "int256",
+      },
+      {
+        indexed: false,
+        internalType: "int256",
+        name: "platformFee",
+        type: "int256",
+      },
+    ],
+    name: "PositionLiquidated",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "traderAddress",
+        type: "address",
+      },
+      {
+        internalType: "int256",
+        name: "amountToBeWithdrawn",
+        type: "int256",
+      },
+    ],
+    name: "takeOutDeposit",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    stateMutability: "payable",
+    type: "fallback",
+  },
+  {
+    inputs: [],
+    name: "withdrawNetProfit",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    stateMutability: "payable",
+    type: "receive",
+  },
+  {
+    inputs: [],
+    name: "currentPriceOfPerp",
+    outputs: [
+      {
+        internalType: "int256",
+        name: "",
+        type: "int256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -351,6 +413,25 @@ export const contractABI = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "traderAddress",
+        type: "address",
+      },
+    ],
+    name: "getMaximumAmountThatCanBeAddedToMargin",
+    outputs: [
+      {
+        internalType: "int256",
+        name: "",
+        type: "int256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "getMaxNumberOfTradablePerp",
     outputs: [
@@ -371,7 +452,7 @@ export const contractABI = [
         type: "address",
       },
     ],
-    name: "getMaximumAmountThatCanBeAddedToMargin",
+    name: "getNumberOfPerpInOpenPositionOfTrader",
     outputs: [
       {
         internalType: "int256",
@@ -383,14 +464,8 @@ export const contractABI = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "traderAddress",
-        type: "address",
-      },
-    ],
-    name: "getNumberOfPerpInOpenPositionOfTrader",
+    inputs: [],
+    name: "getOraclePrice",
     outputs: [
       {
         internalType: "int256",
@@ -534,67 +609,5 @@ export const contractABI = [
     ],
     stateMutability: "view",
     type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "addressOfTrader",
-        type: "address",
-      },
-      {
-        internalType: "int256",
-        name: "numberOfPerpSold",
-        type: "int256",
-      },
-      {
-        internalType: "int256",
-        name: "leverageUsedByTrader",
-        type: "int256",
-      },
-      {
-        internalType: "int256",
-        name: "perpPriceWhenTraderClickedSell",
-        type: "int256",
-      },
-      {
-        internalType: "int256",
-        name: "slippageToleranceOfTrader",
-        type: "int256",
-      },
-    ],
-    name: "sell",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "traderAddress",
-        type: "address",
-      },
-      {
-        internalType: "int256",
-        name: "amountToBeWithdrawn",
-        type: "int256",
-      },
-    ],
-    name: "takeOutDeposit",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "withdrawNetProfit",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    stateMutability: "payable",
-    type: "receive",
   },
 ];

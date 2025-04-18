@@ -204,13 +204,17 @@ export default function DepositUpdateSectionPage2({ goToPageOne }) {
                   onIncorrectInput={onIncorrectInput}
                 />
               </div>
-              <Button
-                className={isDisabled ? "deposit-eth-disable-style" : ""}
-                disabled={isDisabled}
-                onClick={handleClick}
-              >
-                Deposit ETH
-              </Button>
+              <div className="deposit-update-section-page2-bottom">
+                <Button
+                  className={`deposit-update-section-page2-button ${
+                    isDisabled ? "deposit-eth-disable-style" : ""
+                  }`}
+                  disabled={isDisabled}
+                  onClick={handleClick}
+                >
+                  Deposit ETH
+                </Button>
+              </div>
             </>
           );
         } else if (page == "confirmationPage") {

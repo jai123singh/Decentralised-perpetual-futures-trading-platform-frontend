@@ -1,11 +1,12 @@
 import React from "react";
 import "./ReturnToPreviousPageButton.css";
 import Button from "../Button/Button";
+import { FaArrowLeft } from "react-icons/fa";
 
 export default function ReturnToPreviousPageButton({ onClick }) {
   return (
-    <Button onClick={onClick} className="return-to-previous-page-button">
-      ←
-    </Button>
+    <div className="back-button" onClick={onClick}>
+      <FaArrowLeft size={14} />
+    </div>
   );
 }

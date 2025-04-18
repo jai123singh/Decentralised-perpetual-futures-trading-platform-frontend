@@ -126,12 +126,30 @@ export default function PerpTradeSectionPage3({ goToPageTwo, goToPageOne }) {
         if (page === "closePositionPage") {
           return (
             <>
-              <div>Expected PnL: {pnlInEthAsString} ETH</div>
+              <div
+                className={
+                  new BigNumber(pnlInEthAsString).isGreaterThan("0")
+                    ? "perp-trade-section-page3-green-color-style"
+                    : new BigNumber(pnlInEthAsString).isLessThan("0")
+                    ? "perp-trade-section-page3-red-color-style"
+                    : ""
+                }
+              >{`Expected PnL :  ${pnlInEthAsString} ETH`}</div>
               <div className="perp-trade-section-page3-confirmation-box">
                 <div>Are you sure you want to close this position?</div>
                 <div className="perp-trade-section-page3-confirmation-box-button-section">
-                  <Button onClick={handleClickOnYesButton}>Yes</Button>
-                  <Button onClick={goToPageTwo}>No</Button>
+                  <Button
+                    className="perp-trade-section-page3-button-style"
+                    onClick={handleClickOnYesButton}
+                  >
+                    Yes
+                  </Button>
+                  <Button
+                    className="perp-trade-section-page3-button-style"
+                    onClick={goToPageTwo}
+                  >
+                    No
+                  </Button>
                 </div>
               </div>
             </>

@@ -172,8 +172,8 @@ export default function TradingChart() {
 
     chartRef.current = createChart(tradingChartContainerRef.current, {
       layout: {
-        background: { type: ColorType.Solid, color: "black" },
-        textColor: "white",
+        background: { type: ColorType.Solid, color: "Transparent" },
+        textColor: "#c7c7c7",
       },
 
       width: tradingChartContainerRef.current.clientWidth * 0.95,

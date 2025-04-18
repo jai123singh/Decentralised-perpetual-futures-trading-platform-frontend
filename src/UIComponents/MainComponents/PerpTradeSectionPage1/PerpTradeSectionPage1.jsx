@@ -309,20 +309,20 @@ export default function PerpTradeSectionPage1({ goToPageTwo }) {
             <>
               <div className="perp-trade-section-page1-buy-sell-section">
                 <Button
-                  className={
+                  className={`perp-trade-section-page1-buy-sell-button ${
                     selectedButton == "long" ? "long-button-selected" : ""
-                  }
+                  }`}
                   onClick={handleClickOnLongButton}
                 >
-                  Long
+                  Buy | Long
                 </Button>
                 <Button
-                  className={
+                  className={`perp-trade-section-page1-buy-sell-button ${
                     selectedButton == "short" ? "short-button-selected" : ""
-                  }
+                  }`}
                   onClick={handleClickOnShortButton}
                 >
-                  Short
+                  Sell | Short
                 </Button>
               </div>
               <div className="perp-trade-section-page1-quantity-section">
@@ -346,25 +346,33 @@ export default function PerpTradeSectionPage1({ goToPageTwo }) {
               <div className="perp-trade-section-page1-leverage-section">
                 <LeverageRadioButtonGroup onLeverageChange={onLeverageChange} />
               </div>
+
               <div className="perp-trade-section-page1-para-section">
-                <div>
-                  {marginAsBigNumber.isGreaterThan(0)
-                    ? `Expected margin: ${marginAsBigNumber
-                        .toFixed(8)
-                        .toString()} ETH`
-                    : `Expected margin:`}
+                <div className="perp-trade-section-page1-para-section-left-section">
+                  Expected Margin
                 </div>
-                <div>
-                  {platformFeeAsBigNumber.isGreaterThan(0)
-                    ? `Expected platform fee: ${platformFeeAsBigNumber
-                        .toFixed(8)
-                        .toString()} ETH`
-                    : `Expected platform fee:`}
+                <div className="perp-trade-section-page1-para-section-right-section">
+                  {marginAsBigNumber.isGreaterThan(0)
+                    ? `${marginAsBigNumber.toFixed(8).toString()} ETH`
+                    : `0 ETH`}
                 </div>
               </div>
+              <div className="perp-trade-section-page1-para-section">
+                <div className="perp-trade-section-page1-para-section-left-section">
+                  Expected Platform Fee
+                </div>
+                <div className="perp-trade-section-page1-para-section-right-section">
+                  {platformFeeAsBigNumber.isGreaterThan(0)
+                    ? `${platformFeeAsBigNumber.toFixed(8).toString()} ETH`
+                    : `0 ETH`}
+                </div>
+              </div>
+
               <div className="perp-trade-section-page1-trade-button-section">
                 <Button
-                  className={isDisabled ? "trade-button-disable-style" : ""}
+                  className={`trade-button-style ${
+                    isDisabled ? "trade-button-disable-style" : ""
+                  }`}
                   disabled={isDisabled}
                   onClick={handleClick}
                 >

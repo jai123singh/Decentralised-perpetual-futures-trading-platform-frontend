@@ -10,18 +10,38 @@ export default function DepositUpdateSectionPage1({
   depositInEth,
   maxWithdrawableDepositInEth,
 }) {
-  let { deposit, maxWithdrawableDeposit } = useTrade();
   return (
     <>
       <div className="deposit-update-section-page1-para">
-        Total depsoit: {depositInEth.toString()} ETH
+        <div className="deposit-update-section-page1-para-left-section">
+          Total Depsoit
+        </div>
+        <div className="deposit-update-section-page1-para-right-section">
+          {depositInEth.toString()} ETH
+        </div>
       </div>
       <div className="deposit-update-section-page1-para">
-        Withdrawable deposit: {maxWithdrawableDepositInEth.toString()} ETH
+        <div className="deposit-update-section-page1-para-left-section">
+          Withdrawable Deposit
+        </div>
+        <div className="deposit-update-section-page1-para-right-section">
+          {maxWithdrawableDepositInEth.toString()} ETH
+        </div>
       </div>
+
       <div className="deposit-update-section-page1-bottom">
-        <Button onClick={goToPageTwo}>Deposit ETH</Button>
-        <Button onClick={goToPageThree}>Withdraw ETH</Button>
+        <Button
+          className="deposit-update-section-page1-button"
+          onClick={goToPageTwo}
+        >
+          Deposit ETH
+        </Button>
+        <Button
+          className="deposit-update-section-page1-button"
+          onClick={goToPageThree}
+        >
+          Withdraw ETH
+        </Button>
       </div>
     </>
   );
